@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xkcd.comics.data.DataState
 import com.xkcd.comics.data.usercases.FetchXkcdComicsUsecase
-import com.xkcd.comics.model.XkcdComicsResponseModel.Data.Result
+import com.xkcd.comics.model.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,10 +20,10 @@ class HomeViewModel @Inject constructor(
     private var _uiState = MutableLiveData<HomeUiState>()
     var uiStateLiveData: LiveData<HomeUiState> = _uiState
 
-    private var _comicsList = MutableLiveData<List<Result>>()
-    var comicsListLiveData: LiveData<List<Result>> = _comicsList
+    private var _comicsList = MutableLiveData<Result>()
+    var comicsListLiveData: LiveData<Result> = _comicsList
 
-    private var pageNumber = 0
+    private var pageNumber = 1
 
     init {
         fetchComics(pageNumber)
@@ -33,24 +33,21 @@ class HomeViewModel @Inject constructor(
     fun fetchComics(page: Int) {
         _uiState.postValue(if (page == 1) LoadingState else LoadingNextPageState)
         viewModelScope.launch {
-            fetchComicsUserCase(page).collect { dataState ->
+            fetchComicsUserCase().collect { dataState ->
                 when (dataState) {
                     is DataState.Success -> {
-                        if (page == 0) {
+                        if (page == 1) {
                             // First page
                             _uiState.postValue(ContentState)
                             _comicsList.postValue(dataState.data)
                         }else {
                             // Any other page
                             _uiState.postValue(ContentNextPageState)
-                            val currentList = arrayListOf<Result>()
-                            _comicsList.value?.let { currentList.addAll(it) }
-                            currentList.addAll(dataState.data)
-                            _comicsList.postValue(currentList)
+                            _comicsList.postValue(dataState.data)
                         }
                     }
                     is DataState.Error -> {
-                        if (page == 0) {
+                        if (page == 1) {
                             _uiState.postValue(ErrorState(dataState.message))
                         } else {
                             _uiState.postValue(ErrorNextPageState(dataState.message))

@@ -4,10 +4,10 @@ package com.xkcd.comics.ui
 import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.xkcd.comics.base.BaseActivity
-import com.xkcd.comics.databinding.ActivityMainBinding
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.xkcd.comics.R
+import com.xkcd.comics.base.BaseActivity
+import com.xkcd.comics.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

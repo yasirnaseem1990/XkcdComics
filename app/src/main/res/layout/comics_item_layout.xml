@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
-    android:paddingEnd="10dp">
+    android:paddingEnd="10dp"
+    android:paddingStart="10dp">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardComics"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?android:selectableItemBackground"
         android:clickable="true"
         app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -28,8 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/color_box_background"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintDimensionRatio="H,4:3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/backgrounds/scenic" />

@@ -37,7 +37,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         context?.let { ctx ->
 
             // Comics RecyclerView
-            comicsAdapter = ComicsAdapter() { comics, _ -> }
+            comicsAdapter = ComicsAdapter() { comics, _ ->
+
+            }
             comicsAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             bi.recyclerComics.adapter = comicsAdapter
 
@@ -87,11 +89,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is ErrorState -> {
                     bi.progressComics.gone()
                     bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                        /*viewModel.retry()*/
                     }
                 }
 
                 is ErrorNextPageState -> {
                     bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
+                       /* viewModel.retry()*/
                     }
                 }
             }

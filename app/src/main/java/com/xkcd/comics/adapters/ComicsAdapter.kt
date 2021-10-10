@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.xkcd.comics.R
 import com.xkcd.comics.databinding.ComicsItemLayoutBinding
-import com.xkcd.comics.model.XkcdComicsResponseModel.Data.Result
+import com.xkcd.comics.model.Result
 
 class ComicsAdapter(val onComicSelected: (comic: Result, position: Int) -> Unit) : RecyclerView.Adapter<ComicsAdapter.XkcdComicViewHolder>() {
 
@@ -28,9 +28,9 @@ class ComicsAdapter(val onComicSelected: (comic: Result, position: Int) -> Unit)
 
     override fun getItemCount() = comicItems.size
 
-    fun updateItems(comicsList: List<Result>) {
+    fun updateItems(comicsList: Result) {
         comicItems.clear()
-        comicItems.addAll(comicsList)
+        comicItems.add(comicsList)
         notifyDataSetChanged()
     }
 
@@ -38,7 +38,8 @@ class ComicsAdapter(val onComicSelected: (comic: Result, position: Int) -> Unit)
 
         fun bind(comicModel: Result, position: Int) {
             itemBinding.apply {
-                imgComics.load(comicModel.images[0].path.plus(comicModel.images[0].extension)) {
+                tvComicTitle.text = comicModel.safe_title
+                imgComics.load(comicModel.img) {
                     placeholder(R.color.color_box_background)
                     crossfade(true)
                 }

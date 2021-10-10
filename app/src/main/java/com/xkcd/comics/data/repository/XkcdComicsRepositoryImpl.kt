@@ -2,7 +2,7 @@ package com.xkcd.comics.data.repository
 
 import com.xkcd.comics.data.DataState
 import com.xkcd.comics.data.remote.*
-import com.xkcd.comics.model.XkcdComicsResponseModel.Data.Result
+import com.xkcd.comics.model.Result
 import com.xkcd.comics.utils.StringUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -18,12 +18,9 @@ class XkcdComicsRepositoryImpl @Inject constructor(
     private val stringUtils: StringUtils,
     private val apiService: XkcdComicsApiService
 ) : XkcdComicsRepository {
-    override suspend fun loadXkcdComics(
-        offset: Int,
-        limit: Int
-    ): Flow<DataState<List<Result>>> {
+    override suspend fun loadXkcdComics(): Flow<DataState<Result>> {
         return flow {
-            apiService.loadXkcdComics(offSet = offset, limit = limit).apply {
+            apiService.loadXkcdComics().apply {
                 this.onSuccessSuspend {
                     data?.let {
                         emit(DataState.success(it))
@@ -32,25 +29,23 @@ class XkcdComicsRepositoryImpl @Inject constructor(
                 // handle the case when the API request gets an error response.
                 // e.g. internal server error.
             }.onErrorSuspend {
-                emit(DataState.error<List<Result>>(message()))
+                emit(DataState.error<Result>(message()))
 
                 // handle the case when the API request gets an exception response.
                 // e.g. network connection error.
             }.onExceptionSuspend {
                 if (this.exception is IOException) {
-                    emit(DataState.error<List<Result>>(stringUtils.noNetworkErrorMessage()))
+                    emit(DataState.error<Result>(stringUtils.noNetworkErrorMessage()))
                 } else {
-                    emit(DataState.error<List<Result>>(stringUtils.somethingWentWrong()))
+                    emit(DataState.error<Result>(stringUtils.somethingWentWrong()))
                 }
             }
         }
     }
 
     override suspend fun searchXkcdComics(
-        offset: Int,
-        limit: Int,
         query: String
-    ): Flow<DataState<List<Result>>> {
+    ): Flow<DataState<Result>> {
         return flow {
 
         }

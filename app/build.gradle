@@ -27,7 +27,6 @@ android {
             testCoverageEnabled true
 
             buildConfigField("String", "BASE_URL", baseUrlDev)
-            buildConfigField("String", "API_KEY", apikey)
 
             shrinkResources false
             minifyEnabled false

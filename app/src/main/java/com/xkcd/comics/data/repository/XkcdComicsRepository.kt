@@ -1,7 +1,7 @@
 package com.xkcd.comics.data.repository
 
 import com.xkcd.comics.data.DataState
-import com.xkcd.comics.model.XkcdComicsResponseModel.Data.Result
+import com.xkcd.comics.model.Result
 import kotlinx.coroutines.flow.Flow
 
 
@@ -11,6 +11,6 @@ import kotlinx.coroutines.flow.Flow
  * @author yasirnaseem1990@gmail.com
  */
 interface XkcdComicsRepository {
-    suspend fun loadXkcdComics(offset: Int, limit: Int): Flow<DataState<List<Result>>>
-    suspend fun searchXkcdComics(offset: Int, limit: Int, query: String): Flow<DataState<List<Result>>>
+    suspend fun loadXkcdComics(): Flow<DataState<Result>>
+    suspend fun searchXkcdComics(query: String): Flow<DataState<Result>>
 }
