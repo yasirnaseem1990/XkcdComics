@@ -4,8 +4,11 @@
     <!-- Screen Titles -->
     <string name="screen_home_title_str">Home</string>
 
+    <!-- Text Hints -->
+    <string name="hint_search_comics_text_str">Search comics</string>
+
     <!-- Others -->
-    <string name="message_load_photos_str">Loading more comics...</string>
+    <string name="message_load_comics_str">Loading more comics...</string>
     <string name="action_retry_str">Retry</string>
     <string name="message_no_network_connected_str">No network connected!</string>
     <string name="message_something_went_wrong_str">Something went wrong!</string>

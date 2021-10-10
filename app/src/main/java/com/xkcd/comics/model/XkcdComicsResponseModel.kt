@@ -16,7 +16,6 @@ data class XkcdComicsResponseModel(
     ) {
         @Parcelize
         data class Result(
-            val collectedIssues: List<Any>,
             val description: String,
             val format: String,
             val id: Int,
@@ -25,11 +24,11 @@ data class XkcdComicsResponseModel(
             val title: String
         ) : Parcelable {
 
-
+            @Parcelize
             data class Image(
                 val extension: String,
                 val path: String
-            )
+            ): Parcelable
 
         }
     }
