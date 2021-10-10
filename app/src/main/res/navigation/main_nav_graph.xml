@@ -10,5 +10,13 @@
         android:name="com.xkcd.comics.ui.home.HomeFragment"
         android:label="@string/screen_home_title_str"
         tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_comicDetailFragment"
+            app:destination="@id/comicDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/comicDetailFragment"
+        android:name="com.xkcd.comics.ui.comicdetail.ComicDetailFragment"
+        android:label="@string/screen_comic_details_title_str"
+        tools:layout="@layout/fragment_comic_detail" />
 </navigation>

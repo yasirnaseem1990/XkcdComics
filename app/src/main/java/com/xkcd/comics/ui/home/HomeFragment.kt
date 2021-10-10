@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.xkcd.comics.R
 import com.xkcd.comics.adapters.ComicsAdapter
@@ -16,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
-
 
     override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentHomeBinding
         get() = FragmentHomeBinding::inflate
@@ -32,13 +33,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         initObservations()
     }
 
-
     private fun setupViews() {
-        context?.let { ctx ->
+        context?.let {
 
             // Comics RecyclerView
             comicsAdapter = ComicsAdapter() { comics, _ ->
-
+                val bundle = bundleOf("comics" to comics)
+                findNavController().navigate(R.id.action_homeFragment_to_comicDetailFragment, bundle)
             }
             comicsAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             bi.recyclerComics.adapter = comicsAdapter
@@ -47,6 +48,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             bi.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _, scrollY, _, _ ->
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
                     // Need to call the method for load more comics
+                    viewModel.loadMoreComics()
                 }
             }
 
@@ -60,6 +62,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     bi.txtSearchComics.dismissKeyboard()
                     // Need to call the method for perform search
+                    performSearch(bi.txtSearchComics.text?.trim().toString())
                     true
                 }
                 false
@@ -67,6 +70,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
+    private fun performSearch(query: String) {
+        bi.txtSearchComics.setText(query)
+        viewModel.searchComics(query)
+    }
 
     private fun initObservations() {
         viewModel.uiStateLiveData.observe(viewLifecycleOwner) { state ->
@@ -89,13 +96,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 is ErrorState -> {
                     bi.progressComics.gone()
                     bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
-                        /*viewModel.retry()*/
+                        viewModel.retry()
                     }
                 }
 
                 is ErrorNextPageState -> {
                     bi.nestedScrollView.showSnack(state.message, getString(R.string.action_retry_str)) {
-                       /* viewModel.retry()*/
+                        viewModel.retry()
                     }
                 }
             }

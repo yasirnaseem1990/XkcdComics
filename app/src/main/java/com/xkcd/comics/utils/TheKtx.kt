@@ -21,7 +21,7 @@ fun View.invisible() {
 }
 
 fun View.showSnack(message: String, action: String = "", actionListener: () -> Unit = {}): Snackbar {
-    var snackbar = Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
+    val snackbar = Snackbar.make(this, message, Snackbar.LENGTH_SHORT)
     if (action != "") {
         snackbar.duration = Snackbar.LENGTH_INDEFINITE
         snackbar.setAction(action) {

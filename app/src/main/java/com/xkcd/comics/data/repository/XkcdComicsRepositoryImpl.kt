@@ -47,7 +47,9 @@ class XkcdComicsRepositoryImpl @Inject constructor(
         query: String
     ): Flow<DataState<Result>> {
         return flow {
+            apiService.searchPhotos(num = 614, query).apply {
 
+            }
         }
     }
 

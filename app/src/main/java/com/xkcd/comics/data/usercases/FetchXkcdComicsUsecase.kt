@@ -5,5 +5,4 @@ import javax.inject.Inject
 
 class FetchXkcdComicsUsecase @Inject constructor(private val repository: XkcdComicsRepository) {
     suspend operator fun invoke() = repository.loadXkcdComics()
-
 }
